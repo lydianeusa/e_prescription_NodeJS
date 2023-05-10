@@ -1,3 +1,4 @@
+
 const { Op, UniqueConstraintError, ValidationError, QueryTypes } = require('sequelize');
 const { PatientModel, sequelize } = require('../db/sequelize')
 

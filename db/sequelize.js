@@ -1,3 +1,7 @@
+const patients = require('../mock-patients');
+const pharmacies = require('../mock-pharmacies');
+const physicians = require('../mock-physicians');
+const prescriptions = require('../mock-prescriptions');
 
 const { Sequelize, DataTypes } = require('sequelize');
 const PrescriptionModelSequelize = require('../models/prescription');
@@ -17,34 +21,74 @@ const PatientModel = PatientModelSequelize(sequelize, DataTypes)
 const PharmacyModel = PharmacyModelSequelize(sequelize, DataTypes)
 const PhysicianModel = PhysicianModelSequelize(sequelize, DataTypes)
 
-// PrescriptionModel.hasMany(PatientModel, {
-//     foreignKey: {
-//         allowNull: false
-//     }
-//   });
-// PatientModel.belongsTo(PrescriptionModel); 
+PatientModel.hasMany(PrescriptionModel, {
+    foreignKey: {
+        allowNull: false
+    }
+  });
+PrescriptionModel.belongsTo(PatientModel); 
 
-// PrescriptionModel.hasMany(PhysicianModel, {
-//     foreignKey: {
-//         allowNull: false
-//     }
-//   });
-// PhysicianModel.belongsTo(PrescriptionModel);
+PhysicianModel.hasMany(PrescriptionModel, {
+    foreignKey: {
+        allowNull: false
+    }
+  });
+PrescriptionModel.belongsTo(PhysicianModel); 
 
-// PrescriptionModel.hasMany(PharmacyModel, {
-//     foreignKey: {
-//         allowNull: false
-//     }
-//   });
-// PharmacyModel.belongsTo(PrescriptionModel); 
-
+PharmacyModel.hasMany(PrescriptionModel, {
+    foreignKey: {
+        allowNull: false
+    }
+  });
+PrescriptionModel.belongsTo(PharmacyModel); 
 
 
 const initDb = () => {
-    return sequelize.sync() 
+    return sequelize.sync({force: true}) 
     .then(() => {
-    })
-    .catch(error => console.log('Erreur'))
+            patients.forEach((element) => {
+                PatientModel.create({
+                    first_name: element.first_name,
+                    last_name: element.last_name,
+                    birth_date: element.birth_date,
+                    email: element.email,
+                })
+            });
+            pharmacies.forEach((element) => {
+                PharmacyModel.create({
+                    name: element.name,
+                    address: element.address,
+                    zipcode: element.zipcode,
+                    city: element.city,
+                    phone_number: element.phone_number,
+                    email: element.email,
+                })
+            });
+            physicians.forEach((element) => {
+                PhysicianModel.create({
+                  first_name: element.first_name,
+                    last_name: element.last_name,
+                    specialty: element.specialty,
+                    address: element.address,
+                    zipcode: element.zipcode,
+                    city: element.city,
+                    phone_number: element.phone_number,
+                    email: element.email,
+                })
+            });
+            prescriptions.forEach((element) => {
+                PrescriptionModel.create({
+                  medicine_name: element.medicine_name,
+                    dosage: element.dosage,
+                    duration: element.duration,
+                    frequency: element.frequency,
+                    PhysicianId: element.PhysicianId,
+                    PharmacyId: element.PharmacyId,
+                    PatientId: element.PatientId
+                })
+            });
+        })
+    .catch(error => console.log(error))
 }
 
 sequelize.authenticate()
@@ -53,5 +97,5 @@ sequelize.authenticate()
 
 
 module.exports = {
-    sequelize, initDb, PrescriptionModel, PatientModel, PharmacyModel, PhysicianModel
+    sequelize, PatientModel, PharmacyModel, PhysicianModel, PrescriptionModel,  initDb
 }

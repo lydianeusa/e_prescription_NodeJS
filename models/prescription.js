@@ -16,11 +16,33 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: true,
       },
 
+      frequency: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
       duration: {
           type: DataTypes.STRING,
           allowNull: true,
       },
 
+      PatientId:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+     },
 
+     PhysicianId:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+     },
+
+     PharmacyId:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+     }
+    }, {
+        timestamps: true,
+        createdAt: 'created',
+        updatedAt: false,
     })
 }

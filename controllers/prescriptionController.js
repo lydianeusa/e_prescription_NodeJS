@@ -1,10 +1,14 @@
+
+
 const { Op, UniqueConstraintError, ValidationError, QueryTypes } = require('sequelize');
-const { PrescriptionModel, sequelize } = require('../db/sequelize')
+const { PrescriptionModel, PharmacyModel, PatientModel, PhysicianModel, sequelize } = require('../db/sequelize')
+
+
 
 exports.findAllPrescriptions = (req, res) => {
   if(req.query.search){
-      // notre recherche avec paramètres
-      PrescriptionModel.findAll({ where: { medecine_name: {[Op.like] : `%${req.query.search}%`} } })
+      PrescriptionModel.findAll
+      ({ where: { medecine_name: {[Op.like] : `%${req.query.search}%`} } })
       .then((elements)=>{
           if(!elements.length){
               return res.json({message: "Aucune ordonnance ne correspond à votre recherche"})    
@@ -17,7 +21,7 @@ exports.findAllPrescriptions = (req, res) => {
           res.status(500).json({message: msg})
       })
   } else {
-      PrescriptionModel.findAll()
+      PrescriptionModel.findAll({include:[PatientModel, PhysicianModel, PharmacyModel]})
       .then((elements)=>{
           const msg = 'La liste des ordonnances a été récupérée en base de données.'
           res.json({message: msg, data: elements})
@@ -30,15 +34,14 @@ exports.findAllPrescriptions = (req, res) => {
 }
 
 exports.createPrescription = (req, res) => {
-    let newPrescription = req.body;
-
     PrescriptionModel.create({
-        medicine_name: newPrescription.medicine_name,
-        dosage: newPrescription.dosage,
-        duration: newPrescription.duration,
-        // PhysicianId: req.PhysicianId,
-        // PatientId: req.PatientId,
-        // PharmacyId: req.PharmacyId
+        medicine_name: req.body.medicine_name,
+        dosage: req.body.dosage,
+        duration: req.body.duration,
+        frequency: req.body.frequency,
+        PhysicianId: req.PhysicianId,
+        PatientId: req.body.PatientId,
+        PharmacyId: req.body.PharmacyId,
     }).then((el) => {
         const msg = 'Une ordonnance a bien été ajoutée.'
         res.json({ message: msg, data: el })
@@ -78,7 +81,7 @@ exports.updatePrescription = (req, res) => {
             res.json({message: msg})
         } else {
             const msg = "L'ordonnance a bien été modifiée."
-            res.json({message: msg, data: coworking})
+            res.json({message: msg, data: element})
         }
     }).catch((error) => {
         if(error instanceof UniqueConstraintError || error instanceof ValidationError){
@@ -90,7 +93,7 @@ exports.updatePrescription = (req, res) => {
 }
 
 exports.deletePrescription = (req, res) => {
-    CoworkingPrescription.findByPk(req.params.id)
+    PrescriptionModel.findByPk(req.params.id)
         .then(element => {
             if (element === null) {
                 const message = `L'ordonnance demandée n'existe pas.`
