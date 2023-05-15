@@ -10,6 +10,8 @@ router
 router
     .route('/:id')
     .get(patientController.findPatientByPk)
+    .put(patientController.updatePatient)
+    .delete(patientController.deletePatient)
     
     
 module.exports = router; 

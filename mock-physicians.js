@@ -6,7 +6,7 @@ const physicians = [
         address: "2, rue Beaudésert",
         zipcode: "33700",
         city: "Mérignac",
-        phone_number: "0556432123",
+        phone_number: "05 56 43 21 23",
         email: "virginie.lengline@gmail.com",
         created: new Date()
     },
@@ -17,7 +17,7 @@ const physicians = [
         address: "3, rue McCarthy",
         zipcode: "33700",
         city: "Mérignac",
-        phone_number: "0556432123",
+        phone_number: "05 56 43 21 23",
         email: "bertrand.michotte@gmail.com",
         created: new Date()
     },
@@ -28,10 +28,10 @@ const physicians = [
         address: "3, rue Dufour",
         zipcode: "33700",
         city: "Mérignac",
-        phone_number: "0556432123",
+        phone_number: "05 56 43 21 23",
         email: "caroline.dufour@gmail.com",
         created: new Date()
-    },
+    }
 
 ];
 

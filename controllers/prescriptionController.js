@@ -34,12 +34,13 @@ exports.findAllPrescriptions = (req, res) => {
 }
 
 exports.createPrescription = (req, res) => {
+    console.log(req.body);
     PrescriptionModel.create({
         medicine_name: req.body.medicine_name,
         dosage: req.body.dosage,
         duration: req.body.duration,
         frequency: req.body.frequency,
-        PhysicianId: req.PhysicianId,
+        PhysicianId: req.body.PhysicianId,
         PatientId: req.body.PatientId,
         PharmacyId: req.body.PharmacyId,
     }).then((el) => {
@@ -114,4 +115,3 @@ exports.deletePrescription = (req, res) => {
             res.status(500).json({ message, data: error })
         })
 }
-

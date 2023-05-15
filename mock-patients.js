@@ -19,7 +19,7 @@ const patients = [
         birth_date: "2020-01-01",
         email: "emmanuelle.barraud@gmail.com",
         created: new Date()
-    },
+    }
 
 ];
 

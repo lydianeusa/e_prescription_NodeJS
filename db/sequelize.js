@@ -86,6 +86,7 @@ const initDb = () => {
                     PharmacyId: element.PharmacyId,
                     PatientId: element.PatientId
                 })
+                console.log(element)
             });
         })
     .catch(error => console.log(error))

@@ -15,7 +15,7 @@ const prescriptions = [
         frequency: "un fois par jour, le matin",
         duration: "6 mois",
         PatientId: 2,
-        PhysicianId: 1,
+        PhysicianId: 2,
         PharmacyId: 2,
         created: new Date()
     },
@@ -28,7 +28,7 @@ const prescriptions = [
         PhysicianId: 3,
         PharmacyId: 1,
         created: new Date()
-    },
+    }
 ]
 
 

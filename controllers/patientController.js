@@ -1,11 +1,14 @@
 
 const { Op, UniqueConstraintError, ValidationError, QueryTypes } = require('sequelize');
-const { PatientModel, sequelize } = require('../db/sequelize')
+const { PatientModel, sequelize, PrescriptionModel } = require('../db/sequelize')
 
 exports.findAllPatients = (req, res) => {
+    console.log(req.query)
+
   if(req.query.search){
       // notre recherche avec paramètres
-      PatientModel.findAll({ where: { last_name: {[Op.like] : `%${req.query.search}%`} } })
+      PatientModel.findAll({ where: { last_name: {[Op.like] : `%${req.query.search}%`} },
+        include: [PrescriptionModel] })
       .then((elements)=>{
           if(!elements.length){
               return res.json({message: "Aucun patient ne correspond à votre recherche"})    
@@ -18,7 +21,7 @@ exports.findAllPatients = (req, res) => {
           res.status(500).json({message: msg})
       })
   } else {
-      PatientModel.findAll()
+      PatientModel.findAll({include: [PrescriptionModel]})
       .then((elements)=>{
           const msg = 'La liste des patients a été récupérée en base de données.'
           res.json({message: msg, data: elements})
@@ -67,4 +70,47 @@ exports.findPatientByPk = (req, res) => {
         })
 }
 
+exports.updatePatient = (req, res) => {
+    PatientModel.update(req.body, {
+        where: {
+            id: req.params.id
+        }
+    }).then((element) => {
+        if(element === null){
+            const msg = "Le patient demandé n'existe pas."
+            res.json({message: msg})
+        } else {
+            const msg = "Le patient a bien été modifié."
+            res.json({message: msg, data: element})
+        }
+    }).catch((error) => {
+        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+            return res.status(400).json({message: error.message, data: error})
+        } 
+        const msg = "Impossible de mettre à jour le patient."
+        res.status(500).json({message: msg})
+    })
+}
 
+exports.deletePatient = (req, res) => {
+    PatientModel.findByPk(req.params.id)
+        .then(element => {
+            if (element === null) {
+                const message = `Le patient demandée n'existe pas.`
+                return res.status(404).json({ message })
+            }
+            return PatientModel.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+                .then(() => {
+                    const message = `Le patient a bien été supprimée.`
+                    res.json({ message, data: element });
+                })
+        })
+        .catch(error => {
+            const message = `Impossible de supprimer l'ordonnance.`
+            res.status(500).json({ message, data: error })
+        })
+}

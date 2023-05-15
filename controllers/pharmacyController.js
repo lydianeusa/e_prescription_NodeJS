@@ -69,4 +69,3 @@ exports.findPharmacyByPk = (req, res) => {
         })
 }
 
-
