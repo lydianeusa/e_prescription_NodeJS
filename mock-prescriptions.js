@@ -5,9 +5,8 @@ const prescriptions = [
         frequency: "si besoin",
         duration: "",
         PatientId: 1,
-        PhysicianId: 2,
+        PhysicianId: 1,
         PharmacyId: 3,
-        created: new Date()
     },
     {
         medicine_name: "Prozac",
@@ -17,7 +16,6 @@ const prescriptions = [
         PatientId: 2,
         PhysicianId: 2,
         PharmacyId: 2,
-        created: new Date()
     },
     {
         medicine_name: "Amoxicilline",
@@ -27,7 +25,6 @@ const prescriptions = [
         PatientId: 3,
         PhysicianId: 3,
         PharmacyId: 1,
-        created: new Date()
     }
 ]
 

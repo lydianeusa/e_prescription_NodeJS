@@ -8,7 +8,7 @@ const physicians = [
         city: "Mérignac",
         phone_number: "05 56 43 21 23",
         email: "virginie.lengline@gmail.com",
-        created: new Date()
+        // created: new Date()
     },
     {
         first_name: "Bertrand",
@@ -19,7 +19,7 @@ const physicians = [
         city: "Mérignac",
         phone_number: "05 56 43 21 23",
         email: "bertrand.michotte@gmail.com",
-        created: new Date()
+        // created: new Date()
     },
     {
         first_name: "Caroline",
@@ -30,7 +30,7 @@ const physicians = [
         city: "Mérignac",
         phone_number: "05 56 43 21 23",
         email: "caroline.dufour@gmail.com",
-        created: new Date()
+        // created: new Date()
     }
 
 ];

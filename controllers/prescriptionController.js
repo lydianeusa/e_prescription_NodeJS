@@ -34,7 +34,6 @@ exports.findAllPrescriptions = (req, res) => {
 }
 
 exports.createPrescription = (req, res) => {
-    console.log(req.body);
     PrescriptionModel.create({
         medicine_name: req.body.medicine_name,
         dosage: req.body.dosage,

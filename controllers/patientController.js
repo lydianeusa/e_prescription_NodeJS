@@ -6,14 +6,21 @@ exports.findAllPatients = (req, res) => {
     console.log(req.query)
 
   if(req.query.search){
-      // notre recherche avec paramètres
-      PatientModel.findAll({ where: { last_name: {[Op.like] : `%${req.query.search}%`} },
-        include: [PrescriptionModel] })
+    const searchQuery = req.query.search;
+      PatientModel.findAll({ where: 
+            {[Op.or]: [
+                { last_name: { [Op.like]: `%${searchQuery}%` } },
+                { first_name: { [Op.like]: `%${searchQuery}%` } },
+                { birth_date: { [Op.like]: `%${searchQuery}%` } },
+                { email: { [Op.like]: `%${searchQuery}%` } },
+            ]},
+            include: [PrescriptionModel]
+        })
       .then((elements)=>{
           if(!elements.length){
               return res.json({message: "Aucun patient ne correspond à votre recherche"})    
           }
-          const msg = 'La liste des patients a bien été récupérée en base de données.'
+          const msg = 'Le patient a bien été récupérée en base de données.'
           res.json({message: msg, data: elements})
       })
       .catch((error) => {
@@ -54,7 +61,8 @@ exports.createPatient = (req, res) => {
 }
 
 exports.findPatientByPk = (req, res) => {
-    PatientModel.findByPk(req.params.id)
+    PatientModel.findByPk(req.params.id,
+        {include: PrescriptionModel} )
         .then(element => {
             if (element === null) {
                 const message = `Le patient demandé n'existe pas.`

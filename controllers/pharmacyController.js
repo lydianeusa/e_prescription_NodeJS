@@ -5,8 +5,13 @@ const { PharmacyModel, sequelize } = require('../db/sequelize')
 
 exports.findAllPharmacies = (req, res) => {
   if(req.query.search){
-      // notre recherche avec paramètres
-      PharmacyModel.findAll({ where: { name: {[Op.like] : `%${req.query.search}%`} } })
+    const searchQuery = req.query.search;
+      PharmacyModel.findAll({ where:{           
+        [Op.or]: [
+        { name: { [Op.like]: `%${searchQuery}%` } },
+        { city: { [Op.like]: `%${searchQuery}%` } },
+        { zipcode: { [Op.like]: `%${searchQuery}%` } },
+    ], } })
       .then((elements)=>{
           if(!elements.length){
               return res.json({message: "Aucune paharmacie ne correspond à votre recherche"})    
