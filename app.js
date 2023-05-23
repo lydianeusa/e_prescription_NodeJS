@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const serveFavicon = require('serve-favicon')
+const path = require('path')
 const cors = require('cors')
 const sequelize = require('./db/sequelize')
 const port = 3001
